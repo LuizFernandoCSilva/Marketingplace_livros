@@ -8,8 +8,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
@@ -22,10 +20,10 @@ public class UserModel implements Serializable {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private UUID userId;
 
-  @NotBlank
   private String name;
 
-  @NotBlank
-  @Email
   private String email;
+
+  private String password;
+
 }
