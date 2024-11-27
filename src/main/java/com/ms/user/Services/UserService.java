@@ -41,6 +41,8 @@ public class UserService {
 
     UserModel savedUser = userRepository.save(user);
     userProducer.publishMessageEmail(savedUser);
+    userProducer.sendInfoBooks(savedUser);
+
     // Salva o usuário
     return UserResponseRecordDTO.builder()
       .name(savedUser.getName())
