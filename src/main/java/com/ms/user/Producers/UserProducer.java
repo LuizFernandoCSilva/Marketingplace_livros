@@ -1,5 +1,6 @@
 package com.ms.user.Producers;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -43,12 +44,12 @@ public class UserProducer {
 
   }
 
-  public void sendInfoBooks(UserModel userModel) {
-    System.out.println("Enviando informações de livros para o usuário: " + userModel.getName());
+  public void sendInfoBooks(Optional<UserModel> userOptional) {
+    System.out.println("Enviando informações de livros para o usuário: " + userOptional.get().getName());
     var booksDto = new BooksDTO();
-    booksDto.setUserId(userModel.getUserId());
-    booksDto.setName(userModel.getName());
-    booksDto.setEmailTo(userModel.getEmail());
+    booksDto.setUserId(userOptional.get().getUserId());
+    booksDto.setName(userOptional.get().getName());
+    booksDto.setEmailTo(userOptional.get().getEmail());
     System.out.println("Teste: " + booksDto);
 
     rabbitTemplate.convertAndSend("", routingKeyBooks, booksDto);

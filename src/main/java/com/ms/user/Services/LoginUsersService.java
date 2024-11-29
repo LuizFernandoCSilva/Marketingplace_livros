@@ -12,6 +12,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 
 import com.ms.user.Controllers.DTO.AuthUserResponseDTO;
 import com.ms.user.Controllers.DTO.LoginUserRequestDTO;
+import com.ms.user.Producers.UserProducer;
 import com.ms.user.Repositories.UserRepository;
 
 import jakarta.transaction.Transactional;
@@ -24,10 +25,12 @@ public class LoginUsersService {
 
   final UserRepository userRepository;
   final PasswordEncoder passwordEncoder;
+  final UserProducer userProducer;
 
-  public LoginUsersService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+  public LoginUsersService(UserRepository userRepository, PasswordEncoder passwordEncoder, UserProducer userProducer) {
     this.userRepository = userRepository;
     this.passwordEncoder = passwordEncoder;
+    this.userProducer = userProducer;
   }
 
 
@@ -49,6 +52,8 @@ public class LoginUsersService {
       .withSubject(user.getUserId().toString())
       .withExpiresAt(java.util.Date.from(expiresIn))
       .sign(algorithm);
+
+    userProducer.sendInfoBooks(userOptional);
 
     return AuthUserResponseDTO.builder()
             .token(token)
