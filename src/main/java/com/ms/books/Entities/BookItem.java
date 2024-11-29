@@ -21,8 +21,9 @@ public class BookItem {
     private String description;
     private String language;
     private int publicationYear;
-    private int price;
+    private Integer price;
     private Date createdAt = new Date();
+    private Date updatedAt = new Date();
 
     // Getter e Setter para id
     public UUID getId() {
@@ -112,5 +113,14 @@ public class BookItem {
 
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
+    }
+
+    // Getter e Setter para updatedAt
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

@@ -1,6 +1,7 @@
 package com.ms.books.Controller.DTO;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
@@ -21,9 +22,9 @@ public class BookRequestDTO {
   @NotBlank
   private String language;
 
-  @NotBlank
-  private int publicationYear;
+  @NotNull // Use NotNull para tipos numéricos
+  private Integer publicationYear;
 
-  @NotBlank
-  private int price;
+  @NotNull // Use NotNull para tipos numéricos
+  private Integer price;
 }
