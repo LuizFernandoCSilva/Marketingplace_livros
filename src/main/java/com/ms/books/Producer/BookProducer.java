@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import com.ms.books.Consumers.BooksConsumer;
 import com.ms.books.Controller.DTO.EmailDTO;
+import com.ms.books.Controller.DTO.PayRequestDTO;
 import com.ms.books.Entities.BookItem;
 
 @Component
@@ -24,7 +25,12 @@ public class BookProducer {
   private String routingKeyPay;
 
   public void sendPriceToPay(BookItem bookItem) {
-    rabbitTemplate.convertAndSend("", routingKeyPay, bookItem.getPrice());
+    PayRequestDTO payRequestDTO = new PayRequestDTO();
+    payRequestDTO.setName(booksConsumer.getName());
+    payRequestDTO.setTitle(bookItem.getTitle());
+    payRequestDTO.setPrice(bookItem.getPrice());
+    payRequestDTO.setEmailTo(booksConsumer.getEmailTo());
+    rabbitTemplate.convertAndSend("", routingKeyPay, payRequestDTO);
   }
 
   public void publishMessageEmailAdd(BookItem bookItem) {
@@ -33,7 +39,7 @@ public class BookProducer {
   emailDTO.setUserId(booksConsumer.getUserId());
   emailDTO.setTitle(bookItem.getTitle());
   emailDTO.setAuthor(bookItem.getAuthor());
-  emailDTO.setPrice(String.valueOf(bookItem.getPrice()));
+  emailDTO.setPrice((bookItem.getPrice()));
   emailDTO.setEmailTo(booksConsumer.getEmailTo());
   emailDTO.setSubject("Livro " + bookItem.getTitle());
   emailDTO.setText("O livro " + bookItem.getTitle() + " foi adicionado com sucesso para venda.");
@@ -61,7 +67,7 @@ public class BookProducer {
   emailDTO.setUserId(booksConsumer.getUserId());
   emailDTO.setTitle(bookItem.getTitle());
   emailDTO.setAuthor(bookItem.getAuthor());
-  emailDTO.setPrice(String.valueOf(bookItem.getPrice()));
+  emailDTO.setPrice((bookItem.getPrice()));
   emailDTO.setEmailTo(booksConsumer.getEmailTo());
   emailDTO.setSubject("Atualização do livro: " + bookItem.getTitle());
   
@@ -89,7 +95,7 @@ public class BookProducer {
   emailDTO.setUserId(booksConsumer.getUserId());
   emailDTO.setTitle(bookItem.getTitle());
   emailDTO.setAuthor(bookItem.getAuthor());
-  emailDTO.setPrice(String.valueOf(bookItem.getPrice()));
+  emailDTO.setPrice((bookItem.getPrice()));
   emailDTO.setEmailTo(booksConsumer.getEmailTo());
   emailDTO.setSubject("Livro excluído: " + bookItem.getTitle());
 

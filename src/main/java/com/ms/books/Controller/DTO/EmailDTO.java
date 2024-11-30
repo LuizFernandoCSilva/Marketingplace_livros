@@ -10,7 +10,7 @@ public class EmailDTO {
   private UUID userId;
   private String title;
   private String author;
-  private String price;
+  private Integer price;
   private String emailTo;
   private String subject;
   private String text;

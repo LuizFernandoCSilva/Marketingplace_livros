@@ -73,20 +73,21 @@ public class BooksController {
                     .body("Erro ao atualizar o livro: " + e.getMessage());
         }
     }
-    // Endpoint para buscar livros por título, gênero e/ou preço
     @GetMapping("/filter")
     public ResponseEntity<?> filterBooks(
         @RequestParam(required = false) String title,
         @RequestParam(required = false) String genre,
         @RequestParam(required = false) Integer price) {
         try {
-        // Chamar o serviço para filtrar livros pelos critérios fornecidos
-        List<BookItem> books = bookService.filterBooks(title, genre, price);
-        return ResponseEntity.ok(books);
+            System.out.println("Title: " + title + ", Genre: " + genre + ", Price: " + price);
+            List<BookItem> books = bookService.filterBooks(title, genre, price);
+            return ResponseEntity.ok(books);
         } catch (Exception e) {
-        return ResponseEntity.badRequest().body("Erro ao filtrar livros");
+            e.printStackTrace(); // Log da exceção
+            return ResponseEntity.badRequest().body("Erro ao filtrar livros");
         }
     }
+
 
     // Endpoint para deletar um livro
     @DeleteMapping("/delete/{id}")

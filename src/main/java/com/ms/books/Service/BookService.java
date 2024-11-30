@@ -83,30 +83,31 @@ public class BookService {
     }
 
     @Transactional
-    public List<BookItem> filterBooks(String title, String genre, int price) {
+    public List<BookItem> filterBooks(String title, String genre, Integer price) { // Note que 'price' é Integer para suportar null
         try {
             // Filtragem baseada nos parâmetros fornecidos
-            if (title != null && genre != null && price > 0) {
+            if (title != null && genre != null && price != null) {
                 return booksRepository.findByTitleAndGenreAndPrice(title, genre, price);
             } else if (title != null && genre != null) {
                 return booksRepository.findByTitleAndGenre(title, genre);
-            } else if (title != null && price > 0) {
+            } else if (title != null && price != null) {
                 return booksRepository.findByTitleAndPrice(title, price);
-            } else if (genre != null && price > 0) {
+            } else if (genre != null && price != null) {
                 return booksRepository.findByGenreAndPrice(genre, price);
             } else if (title != null) {
                 return booksRepository.findByTitle(title);
             } else if (genre != null) {
                 return booksRepository.findByGenre(genre);
-            } else if (price > 0) {
+            } else if (price != null) {
                 return booksRepository.findByPrice(price);
             } else {
-                    return booksRepository.findAll(); // Caso não haja filtro, retorna todos os livros
-                }
-            } catch (Exception e) {
+                return booksRepository.findAll(); // Caso não haja filtro, retorna todos os livros
+            }
+        } catch (Exception e) {
             throw new RuntimeException("Erro ao filtrar livros", e);
         }
     }
+
 
     @Transactional
     public boolean deleteBook(UUID id) {
