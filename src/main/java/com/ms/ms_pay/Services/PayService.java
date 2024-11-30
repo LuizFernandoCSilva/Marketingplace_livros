@@ -1,6 +1,7 @@
 package com.ms.ms_pay.Services;
 
 import com.ms.ms_pay.Consumers.PayConsumer;
+import com.ms.ms_pay.Producer.PayProducer;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.PaymentIntent;
@@ -18,6 +19,8 @@ public class PayService {
 
   @Autowired
   private PayConsumer payConsumer; // Injetando o PayConsumer
+
+  @Autowired PayProducer payProducer;
 
   @Value("${stripe.api.key}")
   private String stripeApiKey;
@@ -39,6 +42,8 @@ public class PayService {
           return responseData;
         }
 
+        price = price * 100; // Converte o preço para centavos
+
         // Cria um PaymentIntent com os parâmetros recebidos
         PaymentIntentCreateParams params = PaymentIntentCreateParams.builder()
             .setAmount(price.longValue()) // Utiliza o valor de price (em centavos)
@@ -49,6 +54,7 @@ public class PayService {
         // Cria o PaymentIntent
         PaymentIntent paymentIntent = PaymentIntent.create(params);
 
+        payProducer.sendEmail(); // Envia o email
         // Retorna o client secret para o front-end
         responseData.put("clientSecret", paymentIntent.getClientSecret());
 
